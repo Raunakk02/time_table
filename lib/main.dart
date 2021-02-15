@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_table/screens/tabs_screen.dart';
 import './screens/home_screen.dart';
 
 void main() {
@@ -24,7 +25,9 @@ class MyApp extends StatelessWidget {
               ),
             ),
       ),
-      home: HomeScreen(),
+      routes: {
+        '/': (_) => TabsScreen(),
+      },
     );
   }
 }

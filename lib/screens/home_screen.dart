@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+  final List<String> weekDay = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+
+  var index = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,37 +29,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Flexible(
-            flex: 1,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-              color: Colors.white,
-            ),
-          ),
-          Flexible(
-            flex: 8,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
-              color: Colors.orange,
-              child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6,
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 0,
-                ),
-                itemCount: 66,
-                itemBuilder: (ctx, i) {
-                  return i % 6 == 0
-                      ? _buildTimeColumn(i)
-                      : _buildTimeTableCells();
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
+      body: Container(),
     );
   }
 }
