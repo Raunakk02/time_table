@@ -18,6 +18,15 @@ class _TabsScreenState extends State<TabsScreen> {
     'Saturday',
   ];
 
+  int currentWeekDay;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    currentWeekDay = DateTime.now().weekday;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -27,6 +36,7 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
       ],
       child: DefaultTabController(
+        initialIndex: currentWeekDay == 6 ? 0 : currentWeekDay - 1,
         length: 6,
         child: Scaffold(
           appBar: AppBar(

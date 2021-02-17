@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_table/providers/events_provider.dart';
 import 'package:time_table/widgets/event_input.dart';
 
 import '../models/event.dart';
@@ -14,7 +16,22 @@ class WeekdayEventsScreen extends StatefulWidget {
 }
 
 class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
-  List<Event> weekDayEventsList = [];
+  var _init = false;
+  EventsProvider eventsProvider;
+  List<Event> allEventsList;
+  List<Event> weekDayEventsList;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    if (!_init) {
+      eventsProvider = Provider.of<EventsProvider>(context);
+      allEventsList = eventsProvider.events;
+      _init = false;
+    }
+  }
 
   void _addWeekdayEvent(
     String evTitle,
@@ -27,7 +44,7 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
     if (evTitle.isEmpty || evDescription.isEmpty) return;
 
     setState(() {
-      weekDayEventsList.add(
+      eventsProvider.addEvent(
         Event(
           id: DateTime.now().toString(),
           title: evTitle,
@@ -53,6 +70,8 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    weekDayEventsList =
+        allEventsList.where((e) => e.weekDay == widget.weekDayText).toList();
     return Scaffold(
       body: ListView.builder(
         itemCount: weekDayEventsList.length,
