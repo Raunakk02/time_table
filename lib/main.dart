@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:time_table/screens/event_details_screen.dart';
 import 'package:time_table/screens/tabs_screen.dart';
-import './screens/home_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (_) => TabsScreen(),
+        EventDetailsScreen.routeName : (_) => EventDetailsScreen(),
       },
     );
   }
