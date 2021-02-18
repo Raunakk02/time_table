@@ -30,22 +30,33 @@ class EventCard extends StatelessWidget {
             title: Text(
               weekDayEvent.title,
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.white),
             ),
             subtitle: Text(
               weekDayEvent.description,
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.white),
             ),
             leading: Container(
+              padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.cyan,
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Colors.pink, Colors.orange],
+                ),
               ),
-              width: 60,
-              height: 50,
+              width: 80,
+              height: 80,
               child: FittedBox(
                 child: Text(
-                  '${weekDayEvent.startTime.format(context)}\n-\n${weekDayEvent.endTime.format(context)}',
+                  '${weekDayEvent.startTime.format(context)}\n|\n${weekDayEvent.endTime.format(context)}',
                   textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 10,
+                  ),
                 ),
               ),
             ),

@@ -1,4 +1,6 @@
+import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:time_table/models/event.dart';
 import 'package:time_table/providers/events_provider.dart';
@@ -41,6 +43,10 @@ class _TabsScreenState extends State<TabsScreen> {
     }
   }
 
+  void printAlarm() {
+    print('Alarm triggered');
+  }
+
   void _addWeekdayEvent(
     String evTitle,
     String evDescription,
@@ -50,7 +56,10 @@ class _TabsScreenState extends State<TabsScreen> {
   ) {
     print(evTitle);
     print(evDescription);
-    if (evTitle.isEmpty || evDescription.isEmpty) return;
+    if (evTitle.isEmpty ||
+        evDescription.isEmpty ||
+        !weekDays.contains(selectedWeekDay) ||
+        evStartTime == evEndTime) return;
 
     setState(() {
       eventsProvider.addEvent(
@@ -64,6 +73,8 @@ class _TabsScreenState extends State<TabsScreen> {
         ),
       );
     });
+
+    AndroidAlarmManager.periodic(Duration(seconds: 10), 0, printAlarm);
 
     Navigator.of(context).pop();
   }
@@ -115,15 +126,24 @@ class _TabsScreenState extends State<TabsScreen> {
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            WeekdayEventsScreen(weekDays[0]),
-            WeekdayEventsScreen(weekDays[1]),
-            WeekdayEventsScreen(weekDays[2]),
-            WeekdayEventsScreen(weekDays[3]),
-            WeekdayEventsScreen(weekDays[4]),
-            WeekdayEventsScreen(weekDays[5]),
-          ],
+        body: FutureBuilder(
+          future: Hive.openBox('events'),
+          builder: (_, eventsSnapshot) {
+            if (!eventsSnapshot.hasData) {
+              return CircularProgressIndicator();
+            } else {
+              return TabBarView(
+                children: [
+                  WeekdayEventsScreen(weekDays[0]),
+                  WeekdayEventsScreen(weekDays[1]),
+                  WeekdayEventsScreen(weekDays[2]),
+                  WeekdayEventsScreen(weekDays[3]),
+                  WeekdayEventsScreen(weekDays[4]),
+                  WeekdayEventsScreen(weekDays[5]),
+                ],
+              );
+            }
+          },
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: _openModalBottomSheet,

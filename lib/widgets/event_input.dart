@@ -117,7 +117,7 @@ class _EventInputState extends State<EventInput> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               _buildTextField('Title', 40, true, titleController),
-              _buildTextField('Description', 60, true, descriptionController),
+              _buildTextField('Description', 60, false, descriptionController),
               Row(
                 children: [
                   Text(

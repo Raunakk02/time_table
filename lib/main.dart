@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:android_alarm_manager/android_alarm_manager.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:time_table/providers/events_provider.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+
+import './providers/events_provider.dart';
 
 import './screens/event_details_screen.dart';
 import './screens/tabs_screen.dart';
@@ -9,6 +12,9 @@ import './screens/tabs_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
+
+  final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
   runApp(MyApp());
 }
 
