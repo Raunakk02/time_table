@@ -43,6 +43,13 @@ class _TabsScreenState extends State<TabsScreen> {
     }
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    Hive.close();
+  }
+
   void printAlarm() {
     print('Alarm triggered');
   }
@@ -60,21 +67,23 @@ class _TabsScreenState extends State<TabsScreen> {
         evDescription.isEmpty ||
         !weekDays.contains(selectedWeekDay) ||
         evStartTime == evEndTime) return;
+    var obtainedEvent = Event(
+      id: DateTime.now().toString(),
+      title: evTitle,
+      description: evDescription,
+      weekDay: selectedWeekDay,
+      startTime: evStartTime,
+      endTime: evEndTime,
+    );
 
     setState(() {
       eventsProvider.addEvent(
-        Event(
-          id: DateTime.now().toString(),
-          title: evTitle,
-          description: evDescription,
-          weekDay: selectedWeekDay,
-          startTime: evStartTime,
-          endTime: evEndTime,
-        ),
+        obtainedEvent,
       );
     });
 
-    AndroidAlarmManager.periodic(Duration(seconds: 10), 0, printAlarm);
+    // AndroidAlarmManager.periodic(Duration(seconds: 10), 0, printAlarm);
+    Hive.box('events').add(obtainedEvent);
 
     Navigator.of(context).pop();
   }

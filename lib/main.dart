@@ -3,6 +3,7 @@ import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:time_table/models/event.dart';
 
 import './providers/events_provider.dart';
 
@@ -15,6 +16,7 @@ void main() async {
 
   final appDocumentDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
+  Hive.registerAdapter(EventAdapter());
   runApp(MyApp());
 }
 
