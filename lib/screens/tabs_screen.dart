@@ -39,6 +39,7 @@ class _TabsScreenState extends State<TabsScreen> {
     super.didChangeDependencies();
     if (!_init) {
       eventsProvider = Provider.of<EventsProvider>(context);
+
       _init = false;
     }
   }
@@ -66,7 +67,8 @@ class _TabsScreenState extends State<TabsScreen> {
     if (evTitle.isEmpty ||
         evDescription.isEmpty ||
         !weekDays.contains(selectedWeekDay) ||
-        evStartTime == evEndTime) return;
+        evStartTime == evEndTime ||
+        evStartTime.hour > evEndTime.hour) return;
     var obtainedEvent = Event(
       id: DateTime.now().toString(),
       title: evTitle,
@@ -83,7 +85,6 @@ class _TabsScreenState extends State<TabsScreen> {
     });
 
     // AndroidAlarmManager.periodic(Duration(seconds: 10), 0, printAlarm);
-    Hive.box('events').add(obtainedEvent);
 
     Navigator.of(context).pop();
   }
@@ -141,6 +142,8 @@ class _TabsScreenState extends State<TabsScreen> {
             if (!eventsSnapshot.hasData) {
               return CircularProgressIndicator();
             } else {
+              eventsProvider.initEvents();
+
               return TabBarView(
                 children: [
                   WeekdayEventsScreen(weekDays[0]),

@@ -27,6 +27,7 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
 
     if (!_init) {
       eventsProvider = Provider.of<EventsProvider>(context);
+      // eventsProvider.initEvents();
       allEventsList = eventsProvider.events;
       _init = false;
     }
