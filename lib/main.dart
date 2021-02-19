@@ -39,6 +39,13 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(
             elevation: 0,
             centerTitle: true,
+            textTheme: ThemeData.light().textTheme.copyWith(
+                  headline6: TextStyle(
+                    fontFamily: 'Pacifico',
+                    fontSize: 20,
+                    color: Colors.orange,
+                  ),
+                ),
             color: Colors.transparent,
           ),
           textTheme: ThemeData.light().textTheme.copyWith(

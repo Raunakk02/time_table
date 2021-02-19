@@ -116,11 +116,21 @@ class _TabsScreenState extends State<TabsScreen> {
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
-          title: Text(
-            'Time Table',
-            style: TextStyle(
-              color: Theme.of(context).textTheme.headline6.color,
-            ),
+          centerTitle: true,
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.watch_later_outlined,
+                color: Colors.pink,
+              ),
+              Text(
+                'Time Table',
+                // style: TextStyle(
+                //   color: Theme.of(context).textTheme.headline6.color,
+                // ),
+              ),
+            ],
           ),
           bottom: TabBar(
             isScrollable: true,

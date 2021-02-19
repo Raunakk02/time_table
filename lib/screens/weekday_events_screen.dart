@@ -58,6 +58,20 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
   Widget build(BuildContext context) {
     weekDayEventsList =
         allEventsList.where((e) => e.weekDay == widget.weekDayText).toList();
+    weekDayEventsList.sort((ev1, ev2) {
+      var ev1StartTime = ev1.startTime.hour + (ev1.startTime.minute / 60);
+      var ev2StartTime = ev2.startTime.hour + (ev2.startTime.minute / 60);
+
+      if (ev1StartTime < ev2StartTime) {
+        return -1;
+      } else {
+        if (ev1StartTime > ev2StartTime) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
     return Scaffold(
       body: ListView.builder(
         itemCount: weekDayEventsList.length,
