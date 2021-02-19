@@ -21,6 +21,16 @@ class _TabsScreenState extends State<TabsScreen> {
     'Friday',
     'Saturday',
   ];
+
+  final List<MaterialColor> tabbarLabelColors = [
+    Colors.pink,
+    Colors.cyan,
+    Colors.lightGreen,
+    Colors.purple,
+    Colors.amber,
+    Colors.brown,
+  ];
+
   var _init = false;
 
   int todayWeekDay;
@@ -114,6 +124,7 @@ class _TabsScreenState extends State<TabsScreen> {
           ),
           bottom: TabBar(
             isScrollable: true,
+            // indicatorColor: tabbarLabelColors[todayWeekDay],
             tabs: [
               Tab(
                 child: Text(weekDays[0]),

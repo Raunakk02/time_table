@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_table/providers/events_provider.dart';
@@ -20,6 +22,15 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
   List<Event> allEventsList;
   List<Event> weekDayEventsList;
 
+  final List<MaterialAccentColor> availableCardColors = [
+    Colors.pinkAccent,
+    Colors.cyanAccent,
+    Colors.lightGreenAccent,
+    Colors.purpleAccent,
+    Colors.amberAccent,
+    Colors.deepOrangeAccent,
+  ];
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
@@ -33,6 +44,16 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
     }
   }
 
+  void delEvent(Event e) {
+    eventsProvider.deleteEvent(e);
+  }
+
+  MaterialAccentColor cardColorSelector() {
+    final random = Random();
+    final index = random.nextInt(6);
+    return availableCardColors[index];
+  }
+
   @override
   Widget build(BuildContext context) {
     weekDayEventsList =
@@ -44,6 +65,8 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
           return EventCard(
             weekDayEvent: weekDayEventsList[i],
             weekDayText: widget.weekDayText,
+            deleteEvent: delEvent,
+            cardColor: cardColorSelector(),
           );
         },
       ),

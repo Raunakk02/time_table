@@ -8,10 +8,14 @@ class EventCard extends StatelessWidget {
     Key key,
     @required this.weekDayEvent,
     @required this.weekDayText,
+    @required this.deleteEvent,
+    @required this.cardColor,
   }) : super(key: key);
 
   final Event weekDayEvent;
   final String weekDayText;
+  final Function deleteEvent;
+  final MaterialAccentColor cardColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,19 +28,11 @@ class EventCard extends StatelessWidget {
         });
       },
       child: Card(
+        color: cardColor,
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 2, horizontal: 0),
           child: ListTile(
-            title: Text(
-              weekDayEvent.title,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white),
-            ),
-            subtitle: Text(
-              weekDayEvent.description,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white),
-            ),
+            tileColor: Colors.black54,
             leading: Container(
               padding: EdgeInsets.all(2),
               decoration: BoxDecoration(
@@ -59,6 +55,20 @@ class EventCard extends StatelessWidget {
                   ),
                 ),
               ),
+            ),
+            title: Text(
+              weekDayEvent.title,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.white),
+            ),
+            subtitle: Text(
+              weekDayEvent.description,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.white),
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => deleteEvent(weekDayEvent),
             ),
           ),
         ),

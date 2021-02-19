@@ -16,6 +16,21 @@ class EventsProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteEvent(Event e) async {
+    var eventsBox = Hive.box('events');
+    var eventsBoxList = eventsBox.values.toList();
+
+    for (int i = 0; i < eventsBox.length; i++) {
+      Event extractedEvent = eventsBoxList[i];
+      if (extractedEvent == e) {
+        await eventsBox.deleteAt(i);
+        _events.removeAt(i);
+        break;
+      }
+    }
+    notifyListeners();
+  }
+
   void initEvents() {
     _events.clear();
 
