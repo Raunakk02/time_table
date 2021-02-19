@@ -94,7 +94,7 @@ class _TabsScreenState extends State<TabsScreen> {
       );
     });
 
-    // AndroidAlarmManager.periodic(Duration(seconds: 10), 0, printAlarm);
+    AndroidAlarmManager.periodic(Duration(seconds: 10), 0, printAlarm);
 
     Navigator.of(context).pop();
   }
@@ -122,19 +122,19 @@ class _TabsScreenState extends State<TabsScreen> {
             children: [
               Icon(
                 Icons.watch_later_outlined,
-                color: Colors.pink,
+                color: Colors.cyan,
+                size: 26,
+              ),
+              SizedBox(
+                width: 4,
               ),
               Text(
                 'Time Table',
-                // style: TextStyle(
-                //   color: Theme.of(context).textTheme.headline6.color,
-                // ),
               ),
             ],
           ),
           bottom: TabBar(
             isScrollable: true,
-            // indicatorColor: tabbarLabelColors[todayWeekDay],
             tabs: [
               Tab(
                 child: Text(weekDays[0]),

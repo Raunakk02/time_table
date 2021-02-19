@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
             textTheme: ThemeData.light().textTheme.copyWith(
                   headline6: TextStyle(
                     fontFamily: 'Pacifico',
-                    fontSize: 20,
+                    fontSize: 26,
                     color: Colors.orange,
                   ),
                 ),
