@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -20,15 +22,6 @@ class _TabsScreenState extends State<TabsScreen> {
     'Thursday',
     'Friday',
     'Saturday',
-  ];
-
-  final List<MaterialColor> tabbarLabelColors = [
-    Colors.pink,
-    Colors.cyan,
-    Colors.lightGreen,
-    Colors.purple,
-    Colors.amber,
-    Colors.brown,
   ];
 
   var _init = false;
@@ -134,6 +127,12 @@ class _TabsScreenState extends State<TabsScreen> {
             ],
           ),
           bottom: TabBar(
+            labelStyle: Theme.of(context).textTheme.bodyText1,
+            unselectedLabelColor: Colors.white30,
+            unselectedLabelStyle:
+                Theme.of(context).textTheme.bodyText1.copyWith(
+                      fontSize: 11,
+                    ),
             isScrollable: true,
             tabs: [
               Tab(
