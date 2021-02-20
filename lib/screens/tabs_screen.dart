@@ -94,8 +94,14 @@ class _TabsScreenState extends State<TabsScreen> {
 
   void _openModalBottomSheet() {
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       builder: (_) {
-        return EventInput(_addWeekdayEvent, weekDays);
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: EventInput(_addWeekdayEvent, weekDays),
+        );
       },
       context: context,
     );

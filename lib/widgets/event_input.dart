@@ -110,6 +110,9 @@ class _EventInputState extends State<EventInput> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
