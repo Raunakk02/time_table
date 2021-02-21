@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:time_table/models/event.dart';
 
 import 'package:time_table/providers/events_provider.dart';
+import 'package:time_table/screens/event_input_screen.dart';
 
 import 'package:time_table/screens/weekday_events_screen.dart';
 
@@ -94,15 +95,25 @@ class _TabsScreenState extends State<TabsScreen> {
     Navigator.of(context).pop();
   }
 
-  void _openModalBottomSheet() {
-    showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      builder: (_) {
-        return EventInput(_addWeekdayEvent, weekDays);
+  // void _openModalBottomSheet() {
+  //   showModalBottomSheet(
+  //     shape: RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.circular(20),
+  //     ),
+  //     builder: (_) {
+  //       return EventInput(_addWeekdayEvent, weekDays);
+  //     },
+  //     context: context,
+  //   );
+  // }
+
+  void _openEventInputScreen() {
+    Navigator.of(context).pushNamed(
+      EventInputScreen.routeName,
+      arguments: {
+        'addNewEvent': _addWeekdayEvent,
+        'weekDays': weekDays,
       },
-      context: context,
     );
   }
 
@@ -183,7 +194,7 @@ class _TabsScreenState extends State<TabsScreen> {
           },
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _openModalBottomSheet,
+          onPressed: _openEventInputScreen,
           child: Icon(
             Icons.note_add_rounded,
             size: 30,

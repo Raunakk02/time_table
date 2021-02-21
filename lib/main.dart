@@ -4,6 +4,8 @@ import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:time_table/models/event.dart';
+import 'package:time_table/screens/event_input_screen.dart';
+import 'package:time_table/widgets/event_input.dart';
 
 import './providers/events_provider.dart';
 
@@ -66,6 +68,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           '/': (_) => TabsScreen(),
+          EventInputScreen.routeName: (_) => EventInputScreen(),
           EventDetailsScreen.routeName: (_) => EventDetailsScreen(),
         },
       ),
