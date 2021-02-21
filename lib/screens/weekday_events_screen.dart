@@ -45,7 +45,31 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
   }
 
   void delEvent(Event e) {
-    eventsProvider.deleteEvent(e);
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text('Are you sure?'),
+        titleTextStyle: Theme.of(context).textTheme.button,
+        backgroundColor:
+            Theme.of(context).buttonColor.withAlpha(230).withOpacity(1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        actions: [
+          FlatButton(
+            child: Text('Yes'),
+            onPressed: () {
+              eventsProvider.deleteEvent(e);
+              Navigator.of(context).pop();
+            },
+          ),
+          FlatButton(
+            child: Text('No'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   MaterialAccentColor cardColorSelector() {

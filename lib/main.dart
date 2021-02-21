@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
                 ),
             color: Colors.transparent,
           ),
+          buttonColor: Colors.orange,
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
                   fontFamily: 'Comfortaa',

@@ -1,12 +1,14 @@
-import 'dart:math';
-
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+
 import 'package:time_table/models/event.dart';
+
 import 'package:time_table/providers/events_provider.dart';
+
 import 'package:time_table/screens/weekday_events_screen.dart';
+
 import 'package:time_table/widgets/event_input.dart';
 
 class TabsScreen extends StatefulWidget {
@@ -98,10 +100,7 @@ class _TabsScreenState extends State<TabsScreen> {
         borderRadius: BorderRadius.circular(20),
       ),
       builder: (_) {
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(30),
-          child: EventInput(_addWeekdayEvent, weekDays),
-        );
+        return EventInput(_addWeekdayEvent, weekDays);
       },
       context: context,
     );
@@ -110,7 +109,7 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: todayWeekDay == 6 ? 0 : todayWeekDay - 1,
+      initialIndex: todayWeekDay == 7 ? 0 : todayWeekDay - 1,
       length: 6,
       child: Scaffold(
         appBar: AppBar(
