@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_table/providers/events_provider.dart';
+import 'package:time_table/widgets/weekday_events_list.dart';
 
 import '../models/event.dart';
 import '../widgets/event_card.dart';
@@ -97,17 +98,21 @@ class _WeekdayEventsScreenState extends State<WeekdayEventsScreen> {
       }
     });
     return Scaffold(
-      body: ListView.builder(
-        itemCount: weekDayEventsList.length,
-        itemBuilder: (ctx, i) {
-          return EventCard(
-            weekDayEvent: weekDayEventsList[i],
-            weekDayText: widget.weekDayText,
-            deleteEvent: delEvent,
-            cardColor: cardColorSelector(),
-          );
-        },
-      ),
+      body: weekDayEventsList.isEmpty
+          ? Align(
+              alignment: Alignment(0.2, 0.6),
+              child: Image.asset(
+                'assets/images/addEvent.png',
+                fit: BoxFit.contain,
+                height: 250,
+              ),
+            )
+          : WeekdayEventsList(
+              weekDayEventsList: weekDayEventsList,
+              weekDayText: widget.weekDayText,
+              delEvent: delEvent,
+              cardColorSelector: cardColorSelector,
+            ),
     );
   }
 }
