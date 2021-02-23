@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 
 import '../models/event.dart';
 
-Function _showNotifications;
+Future Function(Event) _showNotifications;
 Event obtainedEvent;
 
 void trigger(int id) {
@@ -55,7 +55,12 @@ class EventsProvider with ChangeNotifier {
       if (extractedEvent == e) {
         await eventsBox.deleteAt(i);
         _events.removeAt(i);
-        await AndroidAlarmManager.cancel(i);
+        var cancelSuccess = await AndroidAlarmManager.cancel(i);
+        if (cancelSuccess) {
+          print('Alarm Canceled for id: $i');
+        } else {
+          print('Alarm Not Canceled for id: $i');
+        }
         break;
       }
     }
