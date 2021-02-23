@@ -1,4 +1,4 @@
-package com.example.time_table
+package com.raunak.time_table
 
 import io.flutter.app.FlutterApplication
 import io.flutter.plugins.androidalarmmanager.AlarmService

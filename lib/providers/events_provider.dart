@@ -8,7 +8,6 @@ Function _showNotifications;
 Event obtainedEvent;
 
 void trigger(int id) {
-  id += 1;
   print('Weekday Alaram Triggered, id: $id');
   _showNotifications(obtainedEvent);
 }

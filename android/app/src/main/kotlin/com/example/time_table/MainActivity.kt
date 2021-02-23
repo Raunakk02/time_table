@@ -1,4 +1,4 @@
-package com.example.time_table
+package com.raunak.time_table
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
