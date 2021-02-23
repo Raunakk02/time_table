@@ -98,7 +98,7 @@ class _TabsScreenState extends State<TabsScreen> {
         evStartTime == evEndTime ||
         evStartTime.hour > evEndTime.hour) return;
     obtainedEvent = Event(
-      id: DateTime.now().toString(),
+      id: DateTime.now().toIso8601String(),
       title: evTitle,
       description: evDescription,
       weekDay: selectedWeekDay,
@@ -109,6 +109,7 @@ class _TabsScreenState extends State<TabsScreen> {
     setState(() {
       eventsProvider.addEvent(obtainedEvent, _showNotifications);
     });
+    _showNotifications(obtainedEvent);
 
     Navigator.of(context).pop();
   }
