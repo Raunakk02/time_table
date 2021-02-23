@@ -1,7 +1,10 @@
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 import 'package:time_table/models/event.dart';
 
@@ -9,8 +12,6 @@ import 'package:time_table/providers/events_provider.dart';
 import 'package:time_table/screens/event_input_screen.dart';
 
 import 'package:time_table/screens/weekday_events_screen.dart';
-
-import 'package:time_table/widgets/event_input.dart';
 
 class TabsScreen extends StatefulWidget {
   @override
@@ -30,13 +31,38 @@ class _TabsScreenState extends State<TabsScreen> {
   var _init = false;
 
   int todayWeekDay;
+  Event obtainedEvent;
   EventsProvider eventsProvider;
+  FlutterLocalNotificationsPlugin fltrNotifications;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     todayWeekDay = DateTime.now().weekday;
+    var androidInitialize = AndroidInitializationSettings('app_icon');
+    var iosInitialize = IOSInitializationSettings();
+    var initializationSettings =
+        InitializationSettings(android: androidInitialize, iOS: iosInitialize);
+    fltrNotifications = FlutterLocalNotificationsPlugin();
+    fltrNotifications.initialize(initializationSettings);
+  }
+
+  Future _showNotifications(Event e) async {
+    var androidDetails = AndroidNotificationDetails(
+      'channel ID',
+      'time table',
+      'New event',
+      importance: Importance.max,
+    );
+    var iosDetails = IOSNotificationDetails();
+    var generalNotificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+    print('Local noti triggered!! RK');
+
+    await fltrNotifications.show(0, 'AI', 'No Att', generalNotificationDetails);
   }
 
   @override
@@ -57,10 +83,6 @@ class _TabsScreenState extends State<TabsScreen> {
     Hive.close();
   }
 
-  void printAlarm() {
-    print('Alarm triggered');
-  }
-
   void _addWeekdayEvent(
     String evTitle,
     String evDescription,
@@ -75,7 +97,7 @@ class _TabsScreenState extends State<TabsScreen> {
         !weekDays.contains(selectedWeekDay) ||
         evStartTime == evEndTime ||
         evStartTime.hour > evEndTime.hour) return;
-    var obtainedEvent = Event(
+    obtainedEvent = Event(
       id: DateTime.now().toString(),
       title: evTitle,
       description: evDescription,
@@ -85,12 +107,8 @@ class _TabsScreenState extends State<TabsScreen> {
     );
 
     setState(() {
-      eventsProvider.addEvent(
-        obtainedEvent,
-      );
+      eventsProvider.addEvent(obtainedEvent, _showNotifications);
     });
-
-    AndroidAlarmManager.periodic(Duration(seconds: 10), 0, printAlarm);
 
     Navigator.of(context).pop();
   }

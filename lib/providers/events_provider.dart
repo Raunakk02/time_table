@@ -4,9 +4,13 @@ import 'package:hive/hive.dart';
 
 import '../models/event.dart';
 
+Function _showNotifications;
+Event obtainedEvent;
+
 void trigger(int id) {
   id += 1;
-  print('Weekday Alaram Triggered');
+  print('Weekday Alaram Triggered, id: $id');
+  _showNotifications(obtainedEvent);
 }
 
 class EventsProvider with ChangeNotifier {
@@ -16,16 +20,19 @@ class EventsProvider with ChangeNotifier {
     return [..._events];
   }
 
-  void addEvent(Event e) {
+  void addEvent(Event e, Function showNoti) async {
     _events.add(e);
-    Hive.box('events').add(e).then((_) {
+    Hive.box('events').add(e).then((boxId) {
+      obtainedEvent = e;
+      _showNotifications = showNoti;
       var now = DateTime.now();
       print('Initializing weekDay alarm !!!!! LOL');
       AndroidAlarmManager.periodic(
         Duration(minutes: 2),
-        0,
+        boxId,
         trigger,
         rescheduleOnReboot: true,
+        exact: true,
         startAt: DateTime(
           now.year,
           now.month,
@@ -36,6 +43,7 @@ class EventsProvider with ChangeNotifier {
         wakeup: true,
       );
     });
+
     notifyListeners();
   }
 
@@ -48,6 +56,7 @@ class EventsProvider with ChangeNotifier {
       if (extractedEvent == e) {
         await eventsBox.deleteAt(i);
         _events.removeAt(i);
+        await AndroidAlarmManager.cancel(i);
         break;
       }
     }
