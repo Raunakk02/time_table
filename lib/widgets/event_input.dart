@@ -32,6 +32,66 @@ class _EventInputState extends State<EventInput> {
     endTime = TimeOfDay.now();
   }
 
+  void validateAndAddEvent() async {
+    if (titleController.text.isEmpty) {
+      await showErrorDialog('Title can\'t be empty !');
+    }
+    if (descriptionController.text.isEmpty) {
+      await showErrorDialog('Description can\'t be empty !');
+    }
+    if (!widget.weekDays.contains(selectedWeekDay)) {
+      await showErrorDialog('Please select a weekday !');
+    }
+    if (startTime == endTime) {
+      await showErrorDialog('Start time and end time can\'t be same');
+    }
+    if (startTime.hour > endTime.hour) {
+      await showErrorDialog('Start time can\'t be greater than end time');
+    }
+    widget.addNewEvent(
+      titleController.text,
+      descriptionController.text,
+      selectedWeekDay,
+      startTime,
+      endTime,
+    );
+  }
+
+  Future showErrorDialog(String msg) {
+    return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Container(
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(30),
+            color: Colors.black26,
+          ),
+          child: Text(
+            'Lazy peeps alert !',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        content: Text(msg),
+        titleTextStyle: Theme.of(context).textTheme.button.copyWith(
+              fontSize: 16,
+            ),
+        contentTextStyle: Theme.of(context).textTheme.button,
+        backgroundColor:
+            Theme.of(context).buttonColor.withAlpha(230).withOpacity(1),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        actions: [
+          FlatButton(
+            child: Text('Ok'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   void selectStartTime() async {
     TimeOfDay selectedTime = await showTimePicker(
       context: context,
@@ -155,15 +215,7 @@ class _EventInputState extends State<EventInput> {
               RaisedButton(
                 child: Text('Add Event'),
                 color: Theme.of(context).textTheme.headline6.color,
-                onPressed: () {
-                  widget.addNewEvent(
-                    titleController.text,
-                    descriptionController.text,
-                    selectedWeekDay,
-                    startTime,
-                    endTime,
-                  );
-                },
+                onPressed: validateAndAddEvent,
               ),
             ],
           ),
