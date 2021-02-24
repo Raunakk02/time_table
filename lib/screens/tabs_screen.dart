@@ -1,11 +1,7 @@
-import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
-import 'package:timezone/data/latest.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
-
+import 'package:time_table/Notifications/local_notifications.dart' as noti;
 import 'package:time_table/models/event.dart';
 
 import 'package:time_table/providers/events_provider.dart';
@@ -33,37 +29,38 @@ class _TabsScreenState extends State<TabsScreen> {
   int todayWeekDay;
   Event obtainedEvent;
   EventsProvider eventsProvider;
-  FlutterLocalNotificationsPlugin fltrNotifications;
+  // FlutterLocalNotificationsPlugin fltrNotifications;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     todayWeekDay = DateTime.now().weekday;
-    var androidInitialize = AndroidInitializationSettings('app_icon');
-    var iosInitialize = IOSInitializationSettings();
-    var initializationSettings =
-        InitializationSettings(android: androidInitialize, iOS: iosInitialize);
-    fltrNotifications = FlutterLocalNotificationsPlugin();
-    fltrNotifications.initialize(initializationSettings);
+    // var androidInitialize = AndroidInitializationSettings('app_icon');
+    // var iosInitialize = IOSInitializationSettings();
+    // var initializationSettings =
+    //     InitializationSettings(android: androidInitialize, iOS: iosInitialize);
+    // fltrNotifications = FlutterLocalNotificationsPlugin();
+    // fltrNotifications.initialize(initializationSettings);
+    noti.initNotifications();
   }
 
-  Future _showNotifications(Event e) async {
-    var androidDetails = AndroidNotificationDetails(
-      'channel ID',
-      'time table',
-      'New event',
-      importance: Importance.max,
-    );
-    var iosDetails = IOSNotificationDetails();
-    var generalNotificationDetails = NotificationDetails(
-      android: androidDetails,
-      iOS: iosDetails,
-    );
-    print('Local noti triggered!! RK');
+  // Future _showNotifications(Event e) async {
+  //   var androidDetails = AndroidNotificationDetails(
+  //     'channel ID',
+  //     'time table',
+  //     'New event',
+  //     importance: Importance.max,
+  //   );
+  //   var iosDetails = IOSNotificationDetails();
+  //   var generalNotificationDetails = NotificationDetails(
+  //     android: androidDetails,
+  //     iOS: iosDetails,
+  //   );
+  //   print('Local noti triggered!! RK');
 
-    await fltrNotifications.show(0, 'AI', 'No Att', generalNotificationDetails);
-  }
+  //   await fltrNotifications.show(0, 'AI', 'No Att', generalNotificationDetails);
+  // }
 
   @override
   void didChangeDependencies() {
@@ -107,9 +104,9 @@ class _TabsScreenState extends State<TabsScreen> {
     );
 
     setState(() {
-      eventsProvider.addEvent(obtainedEvent, _showNotifications);
+      eventsProvider.addEvent(obtainedEvent, noti.showNotification);
     });
-    _showNotifications(obtainedEvent);
+    // _showNotifications(obtainedEvent);
 
     Navigator.of(context).pop();
   }

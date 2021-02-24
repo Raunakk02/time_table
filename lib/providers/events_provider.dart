@@ -26,6 +26,7 @@ class EventsProvider with ChangeNotifier {
     Hive.box('events').add(e).then((_) {
       obtainedEvent = e;
       _showNotifications = showNoti;
+      _showNotifications(obtainedEvent);
       var now = DateTime.now();
       print('Initializing weekDay alarm !!!!! LOL');
       AndroidAlarmManager.periodic(
