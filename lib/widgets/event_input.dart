@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EventInput extends StatefulWidget {
   final void Function(
     String evTitle,
     String evDescription,
     String selectedWeekDay,
+    DateTime evStartDate,
     TimeOfDay evStartTime,
-    TimeOfDay evEndTime,
   ) addNewEvent;
 
   final List<String> weekDays;
@@ -21,15 +22,15 @@ class _EventInputState extends State<EventInput> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   String selectedWeekDay;
+  DateTime startDate;
   TimeOfDay startTime;
-  TimeOfDay endTime;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     startTime = TimeOfDay.now();
-    endTime = TimeOfDay.now();
+    startDate = null;
   }
 
   void validateAndAddEvent() async {
@@ -39,22 +40,37 @@ class _EventInputState extends State<EventInput> {
     if (descriptionController.text.isEmpty) {
       await showErrorDialog('Description can\'t be empty !');
     }
-    if (!widget.weekDays.contains(selectedWeekDay)) {
-      await showErrorDialog('Please select a weekday !');
+    // if (!widget.weekDays.contains(selectedWeekDay)) {
+    //   await showErrorDialog('Please select a weekday !');
+    // }
+    // if (startTime == endTime) {
+    //   await showErrorDialog('Start time and end time can\'t be same');
+    // }
+    if (startDate == null) {
+      await showErrorDialog('Please pick Event Date !');
     }
-    if (startTime == endTime) {
-      await showErrorDialog('Start time and end time can\'t be same');
+    if (startDate != null) {
+      if (startDate.isBefore(DateTime.now().subtract(Duration(days: 1)))) {
+        await showErrorDialog('Event Date can\'t be before today !');
+      }
     }
-    if (startTime.hour > endTime.hour) {
-      await showErrorDialog('Start time can\'t be greater than end time');
+    if (startDate != null) {
+      if (startDate.weekday == 7) {
+        await showErrorDialog(
+            'Please select a day other than sunday !\n PS: Rest on sunday :)');
+      }
     }
-    widget.addNewEvent(
-      titleController.text,
-      descriptionController.text,
-      selectedWeekDay,
-      startTime,
-      endTime,
-    );
+
+    if (startDate != null) {
+      selectedWeekDay = widget.weekDays[startDate.weekday - 1];
+      widget.addNewEvent(
+        titleController.text,
+        descriptionController.text,
+        selectedWeekDay,
+        startDate,
+        startTime,
+      );
+    }
   }
 
   Future showErrorDialog(String msg) {
@@ -68,8 +84,9 @@ class _EventInputState extends State<EventInput> {
             color: Colors.black26,
           ),
           child: Text(
-            'Lazy peeps alert !',
+            '😤 Lazy peeps alert !',
             textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16),
           ),
         ),
         content: Text(msg),
@@ -107,19 +124,19 @@ class _EventInputState extends State<EventInput> {
     }
   }
 
-  void selectEndTime() async {
-    TimeOfDay selectedTime = await showTimePicker(
+  void selectStartDate() async {
+    var pickedDate = await showDatePicker(
       context: context,
-      initialTime: TimeOfDay.now(),
-      cancelText: 'Cancel',
-      confirmText: 'Confirm',
+      firstDate: DateTime.now(),
+      initialDate: DateTime.now(),
+      lastDate: DateTime.now().add(
+        Duration(days: 365),
+      ),
+      helpText: 'Pick day corresponding to the weekday',
     );
-
-    if (selectedTime != null) {
-      setState(() {
-        endTime = selectedTime;
-      });
-    }
+    setState(() {
+      startDate = pickedDate;
+    });
   }
 
   TextStyle labelTextStyle() {
@@ -128,12 +145,12 @@ class _EventInputState extends State<EventInput> {
     );
   }
 
-  DropdownMenuItem _buildDropdownMenuItem(int weekDayIndex) {
-    return DropdownMenuItem(
-      child: Text(widget.weekDays[weekDayIndex]),
-      value: widget.weekDays[weekDayIndex],
-    );
-  }
+  // DropdownMenuItem _buildDropdownMenuItem(int weekDayIndex) {
+  //   return DropdownMenuItem(
+  //     child: Text(widget.weekDays[weekDayIndex]),
+  //     value: widget.weekDays[weekDayIndex],
+  //   );
+  // }
 
   TextField _buildTextField(
       String label, int length, bool enableNext, TextEditingController tec) {
@@ -152,8 +169,13 @@ class _EventInputState extends State<EventInput> {
     return Row(
       children: [
         Text(
-          '$label Time : ${time.format(context)}',
-          style: labelTextStyle(),
+          '$label Time 🥱 : ',
+          style:
+              labelTextStyle().copyWith(fontSize: 16, fontFamily: 'Comfortaa'),
+        ),
+        Text(
+          '${time.format(context)} ',
+          style: labelTextStyle().copyWith(fontFamily: 'Comfortaa'),
         ),
         Spacer(),
         IconButton(
@@ -181,37 +203,70 @@ class _EventInputState extends State<EventInput> {
             children: [
               _buildTextField('Title', 40, true, titleController),
               _buildTextField('Description', 60, false, descriptionController),
+              SizedBox(height: 20),
+              Divider(),
+
+              Align(
+                child: Text(
+                  'Select start date ⏰ :',
+                  style: labelTextStyle().copyWith(
+                      // color: Theme.of(context).textTheme.headline6.color,
+                      fontSize: 16,
+                      fontFamily: 'Comfortaa'),
+                ),
+                alignment: Alignment.centerLeft,
+              ),
+              Align(
+                child: Text(
+                  '(corresponding to the desired weekday)',
+                  style: labelTextStyle().copyWith(
+                    color: Theme.of(context).disabledColor,
+                  ),
+                ),
+                alignment: Alignment.centerLeft,
+              ),
               Row(
                 children: [
                   Text(
-                    'Select week day : ',
-                    style: labelTextStyle(),
+                    startDate == null
+                        ? 'No date selected 😞'
+                        : '${DateFormat.MMMMEEEEd().format(startDate)} 😊',
+                    style: labelTextStyle()
+                        .copyWith(color: Colors.blue, fontSize: 16),
                   ),
                   Spacer(),
-                  DropdownButton(
-                    onChanged: (chosenWeekDay) {
-                      setState(() {
-                        selectedWeekDay = chosenWeekDay;
-                      });
-                      print('selected: $selectedWeekDay');
-                    },
-                    hint: Text('Pick a day...'),
-                    value: selectedWeekDay,
-                    style: labelTextStyle(),
-                    items: [
-                      _buildDropdownMenuItem(0),
-                      _buildDropdownMenuItem(1),
-                      _buildDropdownMenuItem(2),
-                      _buildDropdownMenuItem(3),
-                      _buildDropdownMenuItem(4),
-                      _buildDropdownMenuItem(5),
-                    ],
+                  OutlineButton(
+                    child: Text('Pick Date'),
+                    onPressed: selectStartDate,
+                    textColor: Theme.of(context).textTheme.headline6.color,
+                    highlightedBorderColor:
+                        Theme.of(context).textTheme.headline6.color,
                   ),
+                  // DropdownButton(
+                  //   onChanged: (chosenWeekDay) {
+                  //     setState(() {
+                  //       selectedWeekDay = chosenWeekDay;
+                  //     });
+                  //     print('selected: $selectedWeekDay');
+                  //   },
+                  //   hint: Text('Pick a day...'),
+                  //   value: selectedWeekDay,
+                  //   style: labelTextStyle(),
+                  //   items: [
+                  //     _buildDropdownMenuItem(0),
+                  //     _buildDropdownMenuItem(1),
+                  //     _buildDropdownMenuItem(2),
+                  //     _buildDropdownMenuItem(3),
+                  //     _buildDropdownMenuItem(4),
+                  //     _buildDropdownMenuItem(5),
+                  //   ],
+                  // ),
                 ],
               ),
+              Divider(),
               _buildSelectTimeRow('Start', startTime, selectStartTime),
               SizedBox(height: 20),
-              _buildSelectTimeRow('End', endTime, selectEndTime),
+              // _buildSelectTimeRow('End', endTime, selectEndTime),
               RaisedButton(
                 child: Text('Add Event'),
                 color: Theme.of(context).textTheme.headline6.color,

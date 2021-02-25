@@ -8,6 +8,8 @@ void trigger(int id) async {
   noti.NotificationManager n = noti.NotificationManager();
   n.initNotifications();
   Event e = await EventsProvider().getEventForAlarm(id);
-  n.initEvent(e);
-  n.showNotification();
+  if (e != null) {
+    n.initEvent(e);
+    n.showNotification();
+  }
 }

@@ -53,6 +53,11 @@ class MyApp extends StatelessWidget {
             color: Colors.transparent,
           ),
           buttonColor: Colors.orange,
+          buttonTheme: ThemeData.dark().buttonTheme.copyWith(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
           textTheme: ThemeData.light().textTheme.copyWith(
                 headline6: TextStyle(
                   fontFamily: 'Comfortaa',

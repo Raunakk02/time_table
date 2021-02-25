@@ -37,7 +37,10 @@ class NotificationManager {
     var alarmId =
         DateTime.parse(obtainedEvent.id).millisecondsSinceEpoch % 1000000;
 
-    await fltrNotifications.show(alarmId, obtainedEvent.title,
-        obtainedEvent.description, generalNotificationDetails);
+    await fltrNotifications.show(
+        alarmId,
+        '🥱Wake Up for :\n ${obtainedEvent.title}',
+        obtainedEvent.description,
+        generalNotificationDetails);
   }
 }

@@ -21,8 +21,8 @@ class EventAdapter extends TypeAdapter<Event> {
       title: fields[1] as String,
       description: fields[2] as String,
       weekDay: fields[3] as String,
-      startTime: fields[4] as TimeOfDay,
-      endTime: fields[5] as TimeOfDay,
+      startDate: fields[4] as DateTime,
+      startTime: fields[5] as TimeOfDay,
     );
   }
 
@@ -39,9 +39,9 @@ class EventAdapter extends TypeAdapter<Event> {
       ..writeByte(3)
       ..write(obj.weekDay)
       ..writeByte(4)
-      ..write(obj.startTime)
+      ..write(obj.startDate)
       ..writeByte(5)
-      ..write(obj.endTime);
+      ..write(obj.startTime);
   }
 
   @override

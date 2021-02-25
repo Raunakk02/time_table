@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'event.g.dart';
 
-@HiveType(typeId: 0, adapterName: 'EventAdapter')
+@HiveType(typeId: 0)
 class Event {
   @HiveField(0)
   String id;
@@ -14,16 +14,16 @@ class Event {
   @HiveField(3)
   String weekDay;
   @HiveField(4)
-  TimeOfDay startTime;
+  DateTime startDate;
   @HiveField(5)
-  TimeOfDay endTime;
+  TimeOfDay startTime;
 
   Event({
     @required this.id,
     @required this.title,
     @required this.description,
     @required this.weekDay,
+    @required this.startDate,
     @required this.startTime,
-    @required this.endTime,
   });
 }

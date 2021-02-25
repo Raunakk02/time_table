@@ -25,7 +25,6 @@ class EventsProvider with ChangeNotifier {
       // _showNotifications = showNoti;
       // _showNotifications();
       // noti.NotificationManager().initEvent(e);
-      var now = DateTime.now();
       print('Initializing weekDay alarm !!!!! LOL');
       AndroidAlarmManager.periodic(
         Duration(days: 7),
@@ -34,9 +33,9 @@ class EventsProvider with ChangeNotifier {
         rescheduleOnReboot: true,
         exact: true,
         startAt: DateTime(
-          now.year,
-          now.month,
-          now.day,
+          e.startDate.year,
+          e.startDate.month,
+          e.startDate.day,
           e.startTime.hour,
           e.startTime.minute,
         ),
@@ -89,14 +88,7 @@ class EventsProvider with ChangeNotifier {
       }
     }
 
-    return Event(
-      id: DateTime.now().toIso8601String(),
-      description: 'example',
-      title: 'Sample',
-      startTime: TimeOfDay(hour: 16, minute: 20),
-      endTime: TimeOfDay(hour: 17, minute: 00),
-      weekDay: 'Thursday',
-    );
+    return null;
   }
 
   void initEvents() {

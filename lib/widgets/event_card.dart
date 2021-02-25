@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:time_table/screens/event_details_screen.dart';
 
 import '../models/event.dart';
@@ -26,7 +27,7 @@ class EventCard extends StatelessWidget {
         child: ListTile(
           tileColor: Colors.black54,
           leading: Container(
-            padding: EdgeInsets.all(2),
+            padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               gradient: LinearGradient(
@@ -39,7 +40,7 @@ class EventCard extends StatelessWidget {
             height: 80,
             child: FittedBox(
               child: Text(
-                '${weekDayEvent.startTime.format(context)}\n|\n${weekDayEvent.endTime.format(context)}',
+                '${weekDayEvent.startTime.format(context)}',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.white,

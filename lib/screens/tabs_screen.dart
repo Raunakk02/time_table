@@ -86,23 +86,24 @@ class _TabsScreenState extends State<TabsScreen> {
     String evTitle,
     String evDescription,
     String selectedWeekDay,
+    DateTime evStartDate,
     TimeOfDay evStartTime,
-    TimeOfDay evEndTime,
   ) {
     print(evTitle);
     print(evDescription);
     if (evTitle.isEmpty ||
         evDescription.isEmpty ||
         !weekDays.contains(selectedWeekDay) ||
-        evStartTime == evEndTime ||
-        evStartTime.hour > evEndTime.hour) return;
+        evStartTime == null ||
+        evStartDate == null ||
+        evStartDate.weekday == 7) return;
     obtainedEvent = Event(
       id: DateTime.now().toIso8601String(),
       title: evTitle,
       description: evDescription,
       weekDay: selectedWeekDay,
+      startDate: evStartDate,
       startTime: evStartTime,
-      endTime: evEndTime,
     );
 
     setState(() {
