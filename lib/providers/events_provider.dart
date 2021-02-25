@@ -28,7 +28,7 @@ class EventsProvider with ChangeNotifier {
       var now = DateTime.now();
       print('Initializing weekDay alarm !!!!! LOL');
       AndroidAlarmManager.periodic(
-        Duration(minutes: 2),
+        Duration(days: 7),
         DateTime.parse(e.id).millisecondsSinceEpoch % 1000000,
         trigger,
         rescheduleOnReboot: true,
