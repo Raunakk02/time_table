@@ -1,18 +1,15 @@
-import 'dart:math';
-
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:time_table/Hive/hive_init.dart';
+import 'package:time_table/Notifications/callback.dart';
+import '../Notifications/local_notifications.dart' as noti;
 
 import '../models/event.dart';
 
-Future<dynamic> Function(Event) _showNotifications;
+Future<dynamic> Function() _showNotifications;
 Event obtainedEvent;
-
-void trigger(int id) {
-  print('Weekday Alaram Triggered, id: $id');
-  _showNotifications(obtainedEvent);
-}
 
 class EventsProvider with ChangeNotifier {
   List<Event> _events = [];
@@ -21,12 +18,13 @@ class EventsProvider with ChangeNotifier {
     return [..._events];
   }
 
-  void addEvent(Event e, Future Function(Event) showNoti) async {
+  void addEvent(Event e, Future Function() showNoti) async {
     _events.add(e);
     Hive.box('events').add(e).then((_) {
       obtainedEvent = e;
       _showNotifications = showNoti;
-      _showNotifications(obtainedEvent);
+      // _showNotifications();
+      noti.NotificationManager().initEvent(e);
       var now = DateTime.now();
       print('Initializing weekDay alarm !!!!! LOL');
       AndroidAlarmManager.periodic(
@@ -75,6 +73,30 @@ class EventsProvider with ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  Future<Event> getEventForAlarm(triggeredAlarmId) async {
+    await initHive();
+    var eventsBox = await Hive.openBox('events');
+    var eventsBoxList = eventsBox.values.toList();
+
+    for (int i = 0; i < eventsBox.length; i++) {
+      Event extractedEvent = eventsBoxList[i];
+      int extractedEventAlarmId =
+          DateTime.parse(extractedEvent.id).millisecondsSinceEpoch % 1000000;
+      if (extractedEventAlarmId == triggeredAlarmId) {
+        return extractedEvent;
+      }
+    }
+
+    return Event(
+      id: DateTime.now().toIso8601String(),
+      description: 'example',
+      title: 'Sample',
+      startTime: TimeOfDay(hour: 16, minute: 20),
+      endTime: TimeOfDay(hour: 17, minute: 00),
+      weekDay: 'Thursday',
+    );
   }
 
   void initEvents() {

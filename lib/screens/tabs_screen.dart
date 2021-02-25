@@ -42,7 +42,7 @@ class _TabsScreenState extends State<TabsScreen> {
     //     InitializationSettings(android: androidInitialize, iOS: iosInitialize);
     // fltrNotifications = FlutterLocalNotificationsPlugin();
     // fltrNotifications.initialize(initializationSettings);
-    noti.initNotifications();
+    noti.NotificationManager().initNotifications();
   }
 
   // Future _showNotifications(Event e) async {
@@ -104,7 +104,8 @@ class _TabsScreenState extends State<TabsScreen> {
     );
 
     setState(() {
-      eventsProvider.addEvent(obtainedEvent, noti.showNotification);
+      eventsProvider.addEvent(
+          obtainedEvent, noti.NotificationManager().showNotification);
     });
     // _showNotifications(obtainedEvent);
 
