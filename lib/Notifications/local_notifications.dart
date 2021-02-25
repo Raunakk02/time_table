@@ -8,7 +8,8 @@ class NotificationManager {
   Event obtainedEvent;
 
   void initNotifications() async {
-    var androidInitialize = AndroidInitializationSettings('app_icon');
+    var androidInitialize =
+        AndroidInitializationSettings('@mipmap/launcher_icon');
     var iosInitialize = IOSInitializationSettings();
     var initializationSettings =
         InitializationSettings(android: androidInitialize, iOS: iosInitialize);

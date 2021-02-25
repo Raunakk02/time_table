@@ -8,7 +8,7 @@ import '../Notifications/local_notifications.dart' as noti;
 
 import '../models/event.dart';
 
-Future<dynamic> Function() _showNotifications;
+// Future<dynamic> Function() _showNotifications;
 Event obtainedEvent;
 
 class EventsProvider with ChangeNotifier {
@@ -18,13 +18,13 @@ class EventsProvider with ChangeNotifier {
     return [..._events];
   }
 
-  void addEvent(Event e, Future Function() showNoti) async {
+  void addEvent(Event e) async {
     _events.add(e);
     Hive.box('events').add(e).then((_) {
       obtainedEvent = e;
-      _showNotifications = showNoti;
+      // _showNotifications = showNoti;
       // _showNotifications();
-      noti.NotificationManager().initEvent(e);
+      // noti.NotificationManager().initEvent(e);
       var now = DateTime.now();
       print('Initializing weekDay alarm !!!!! LOL');
       AndroidAlarmManager.periodic(

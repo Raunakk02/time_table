@@ -25,6 +25,7 @@ class _TabsScreenState extends State<TabsScreen> {
   ];
 
   var _init = false;
+  var _isLoaded = false;
 
   int todayWeekDay;
   Event obtainedEvent;
@@ -42,7 +43,7 @@ class _TabsScreenState extends State<TabsScreen> {
     //     InitializationSettings(android: androidInitialize, iOS: iosInitialize);
     // fltrNotifications = FlutterLocalNotificationsPlugin();
     // fltrNotifications.initialize(initializationSettings);
-    noti.NotificationManager().initNotifications();
+    // noti.NotificationManager().initNotifications();
   }
 
   // Future _showNotifications(Event e) async {
@@ -68,6 +69,7 @@ class _TabsScreenState extends State<TabsScreen> {
     super.didChangeDependencies();
     if (!_init) {
       eventsProvider = Provider.of<EventsProvider>(context);
+      // eventsProvider.initEvents();
 
       _init = false;
     }
@@ -105,7 +107,9 @@ class _TabsScreenState extends State<TabsScreen> {
 
     setState(() {
       eventsProvider.addEvent(
-          obtainedEvent, noti.NotificationManager().showNotification);
+        obtainedEvent,
+        // noti.NotificationManager().showNotification,
+      );
     });
     // _showNotifications(obtainedEvent);
 
@@ -195,7 +199,10 @@ class _TabsScreenState extends State<TabsScreen> {
             if (!eventsSnapshot.hasData) {
               return CircularProgressIndicator();
             } else {
-              eventsProvider.initEvents();
+              if (!_isLoaded) {
+                eventsProvider.initEvents();
+                _isLoaded = true;
+              }
 
               return TabBarView(
                 children: [
