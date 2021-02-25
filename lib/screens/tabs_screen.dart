@@ -146,10 +146,10 @@ class _TabsScreenState extends State<TabsScreen> {
           title: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.watch_later_outlined,
-                color: Colors.cyan,
-                size: 26,
+              Image.asset(
+                'assets/images/app_icon.png',
+                fit: BoxFit.contain,
+                height: MediaQuery.of(context).viewPadding.top + 10, //30,
               ),
               SizedBox(
                 width: 4,
