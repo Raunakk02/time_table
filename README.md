@@ -1,6 +1,6 @@
 # time_table
 
-A Flutter application to keep track of your weekly schedule!
+A Flutter application to keep track of your weekly schedule!!
 
 ## Getting Started
 
